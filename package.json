@@ -10,6 +10,8 @@
     "start": "node server.js"
   },
   "dependencies": {
+    "request": "^2.85.0",
+    "axios": "^0.18.0",
     "anti-spam": "^0.2.7",
     "array-sort": "^1.0.0",
     "canvas": "^1.6.11",
