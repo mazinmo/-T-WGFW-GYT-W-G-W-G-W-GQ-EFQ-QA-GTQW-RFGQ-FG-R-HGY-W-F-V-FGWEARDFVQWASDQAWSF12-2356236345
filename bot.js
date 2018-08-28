@@ -4,7 +4,6 @@ const fs = require('fs');
 const prefix = ".";
 const Music = require('discord.js-musicbot-addon');
 client.login(process.env.token);
-const Music = require('discord.js-musicbot-addon');
 const music = new Music(client, {
   prefix: ".", // Prefix for the commands.
   youtubeKey: 'AIzaSyApvbcgvYRGulf1I1Ffjfhr2K-S6TX0e9w',
