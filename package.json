@@ -10,7 +10,9 @@
     "start": "node server.js"
   },
   "dependencies": {
+    "get-youtube-id": "^1.0.0",
     "request": "^2.85.0",
+    "youtube-info": "^1.2.0",
     "axios": "^0.18.0",
     "anti-spam": "^0.2.7",
     "array-sort": "^1.0.0",
