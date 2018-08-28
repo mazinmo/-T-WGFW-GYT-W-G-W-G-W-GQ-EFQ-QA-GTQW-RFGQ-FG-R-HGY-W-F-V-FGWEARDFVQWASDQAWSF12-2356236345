@@ -94,25 +94,25 @@ bot.on("message", async message => {
 		case "play":
 			if (args.length == 0 && queue.length > 0) {
 				if (!message.member.voiceChannel) {
-					message.reply(":musical_note: | **You need to be in a voice channel to play music**.");
+					message.channel.send(":musical_note: | **You need to be in a voice channel to play music**.");
 				} else {
 					isPlaying = true;
 					playMusic(queue[0], message);
-					message.reply(`**Now playing** :notes: | \`${songsQueue[0]}\`**.**`);
+					message.channel.send(`**Now playing** :notes: | \`${songsQueue[0]}\`**.**`);
 				}
 			} else if (args.length == 0 && queue.length == 0) {
-				message.reply(`:mag_right: | **Queue is empty**.
+				message.channel.send(`:mag_right: | **Queue is empty**.
 **Type** \`=play <song name>\` or \`=search <song name>\` **to play new songs**.`);
 			} else if (queue.length > 0 || isPlaying) {
 				getID(args).then(id => {
 					if (id) {
 						queue.push(id);
 						getYouTubeResultsId(args, 1).then(ytResults => {
-							message.reply(`**Added to the queue** :ballot_box_with_check: |  **${ytResults[0]}**`);
+							message.channel.send(`**Added to the queue** :ballot_box_with_check: |  **${ytResults[0]}**`);
 							songsQueue.push(ytResults[0]);
 						}).catch(error => console.log(error));
 					} else {
-						message.reply(":mag_right: | **Sorry, I couldn't find the song**.");
+						message.channel.send(":mag_right: | **Sorry, I couldn't find the song**.");
 					}
 				}).catch(error => console.log(error));
 			} else {
@@ -122,11 +122,11 @@ bot.on("message", async message => {
 						queue.push(id);
 						playMusic(id, message);
 						getYouTubeResultsId(args, 1).then(ytResults => {
-							message.reply(`**Now playing** :notes: | \`${ytResults[0]}\`**.**`);
+							message.channel.send(`**Now playing** :notes: | \`${ytResults[0]}\`**.**`);
 							songsQueue.push(ytResults[0]);
 						}).catch(error => console.log(error));
 					} else {
-						message.reply(":mag_right: | **Sorry, I couldn't find the song**.");
+						message.channel.send(":mag_right: | **Sorry, I couldn't find the song**.");
 					}
 				}).catch(error => console.log(error));
 			}
@@ -135,7 +135,7 @@ bot.on("message", async message => {
 		case "skip":
 			console.log(queue);
 			if (queue.length === 1) {
-				message.reply(`:mag_right: | **Queue is empty**.
+				message.channel.send(`:mag_right: | **Queue is empty**.
 **Type** \`=play <song name>\` or \`=search <song name>\` **to play new songs**.`);
 				dispatcher.end();
 				setTimeout(() => voiceChannel.leave(), 1000);
@@ -146,38 +146,38 @@ bot.on("message", async message => {
 
 					if (skipRequest >= Math.ceil((voiceChannel.members.size - 1) / 2)) {
 						skipSong(message);
-						message.reply(":fast_forward: | **Skipped**.");
+						message.channel.send(":fast_forward: | **Skipped**.");
 					} else {
-						message.reply(`:no_entry_sign: | **You need** \`${Math.ceil((voiceChannel.members.size - 1) / 2) - skipRequest}\` **more to skip the current song**.`);
+						message.channel.send(`:no_entry_sign: | **You need** \`${Math.ceil((voiceChannel.members.size - 1) / 2) - skipRequest}\` **more to skip the current song**.`);
 					}
 				} else {
-					message.reply(":octagonal_sign: | **You already voted to skip**.");
+					message.channel.send(":octagonal_sign: | **You already voted to skip**.");
 				}
 			}
 			break;
 
 		case "queue":
 			if (queue.length === 0) { // if there are no songs in the queue, send message that queue is empty
-				message.reply(`:mag_right: | **Queue is empty**.
+				message.channel.send(`:mag_right: | **Queue is empty**.
 **Type** \`=play <song name>\` or \`=search <song name>\` **to play new songs**.`);
 			} else if (args.length > 0 && args[0] == 'remove') { // if arguments are provided and first one is remove
 				if (args.length == 2 && args[1] <= queue.length) { // check if there are no more than 2 arguments and that second one is in range of songs number in queue
 					// then remove selected song from the queue
-                    message.reply(`\`${songsQueue[args[1] - 1]}\` **Has been removed from the queue**.
+                    message.channel.send(`\`${songsQueue[args[1] - 1]}\` **Has been removed from the queue**.
 **Type \`=queue\` to see the current queue**.`);
 					queue.splice(args[1] - 1, 1);
 					songsQueue.splice(args[1] - 1, 1);
 				} else { // if there are more than 2 arguments and the second one is not in the range of songs number in queue, send message
-					message.reply(`:1234: | **You need to enter a valid queue song number** (1-${queue.length}).`);
+					message.channel.send(`:1234: | **You need to enter a valid queue song number** (1-${queue.length}).`);
 				}
 			} else if (args.length > 0 && args[0] == 'clear') { // same as remove, only clears queue if clear is first argument
 				if (args.length == 1) {
 					// reseting queue and songsQueue, but leaving current song
-					message.reply(":wastebasket: | **All upcoming songs have been removed**.");
+					message.channel.send(":wastebasket: | **All upcoming songs have been removed**.");
 					queue.splice(1);
 					songsQueue.splice(1);
 				} else {
-					message.reply(":x: | **You need to type `=queue clear` without following arguments**.");
+					message.channel.send(":x: | **You need to type `=queue clear` without following arguments**.");
 				}
 			} else if (args.length > 0 && args[0] == 'shuffle') {
 				let tempA = [songsQueue[0]];
@@ -207,7 +207,7 @@ bot.on("message", async message => {
 			if (isPlaying) {
 				queue.splice(1, 0, queue[0]);
 				songsQueue.splice(1, 0, songsQueue[0]);
-				message.reply(`:repeat: | **\`${songsQueue[0]}\` Will be played again**.`);
+				message.channel.send(`:repeat: | **\`${songsQueue[0]}\` Will be played again**.`);
 			}
 			break;
 
@@ -218,7 +218,7 @@ bot.on("message", async message => {
 
 		case "search":
 			if (args.length == 0) {
-				message.reply(":mag_right: | **You need to enter a search term**. ( `=search <search term>` )");
+				message.channel.send(":mag_right: | **You need to enter a search term**. ( `=search <search term>` )");
 			} else {
 				message.channel.send(":mag_right: | **Searching youtube**...");
 				getYouTubeResultsId(args, 5).then(ytResults => {
@@ -242,7 +242,7 @@ bot.on("message", async message => {
 		case "add":
 			if (youtubeSearched === true) {
 				if (!re.test(args)) {
-					message.reply(`:no_entry_sign: | **You entered the wrong song number or character**.
+					message.channel.send(`:no_entry_sign: | **You entered the wrong song number or character**.
 **Please only enter \`1-5\` for song number to be queued**.`);
 				} else {
 					let choice = ytResultAdd[args - 1];
@@ -250,7 +250,7 @@ bot.on("message", async message => {
 						if (id) {
 							queue.push(id);
 							getYouTubeResultsId(choice, 1).then(ytResults => {
-								message.reply(`**Added to the queue** :ballot_box_with_check: | **${ytResults[0]}**`);
+								message.channel.send(`**Added to the queue** :ballot_box_with_check: | **${ytResults[0]}**`);
 								songsQueue.push(ytResults[0]);
 							}).catch(error => console.log(error));
 						}
@@ -258,22 +258,22 @@ bot.on("message", async message => {
 					youtubeSearched = false;
 				}
 			} else {
-				message.reply(":octagonal_sign: | **You need to use `=search <search term>` command first to add song to the queue**.");
+				message.channel.send(":octagonal_sign: | **You need to use `=search <search term>` command first to add song to the queue**.");
 			}
 			break;
 
 		case "vol":
 			if (args.length == 0 && dispatcher) {
-                message.reply(`:loud_sound: | **Current volume is** \`${dispatcher.volume}\`.
+                message.channel.send(`:loud_sound: | **Current volume is** \`${dispatcher.volume}\`.
 **Type \`=vol [percentage - 0 to 200]\` to set music volume**.`);
 			} else if (args.length > 0 && regVol.test(args) == true && dispatcher) {
 				dispatcher.setVolume(args * 0.01);
-				message.reply(`:loud_sound: | **Music volume has been set to** \`${args}%\`**.**`);
+				message.channel.send(`:loud_sound: | **Music volume has been set to** \`${args}%\`**.**`);
 				console.log(dispatcher.volume);
 			} else if (!regVol.test(args) && dispatcher) {
-				message.reply(":sound: | **You need to enter a number in `0-200` range**.");
+				message.channel.send(":sound: | **You need to enter a number in `0-200` range**.");
 			} else {
-				message.reply(":x: | **You can only set music volume if music playing**.");
+				message.channel.send(":x: | **You can only set music volume if music playing**.");
 			}
 			break;
 	}
