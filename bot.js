@@ -1,4 +1,3 @@
-const botSettings = require("./config.json");
 const Discord = require("discord.js");
 const axios = require("axios");
 const yt = require("ytdl-core");
