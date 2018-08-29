@@ -101,8 +101,7 @@ bot.on("message", async message => {
 					message.channel.send(`**Now playing** :notes: | \`${songsQueue[0]}\`**.**`);
 				}
 			} else if (args.length == 0 && queue.length == 0) {
-				message.channel.send(`:mag_right: | **Queue is empty**.
-**Type** \`=play <song name>\` or \`=search <song name>\` **to play new songs**.`);
+				message.channel.send(`:mag_right: | **Type** \`=play <song name>\` or \`=search <song name>\` **to play new songs**.`);
 			} else if (queue.length > 0 || isPlaying) {
 				getID(args).then(id => {
 					if (id) {
