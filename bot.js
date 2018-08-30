@@ -280,7 +280,6 @@ bot.on("message", async message => {
 	case "nowplaying":
 		const short = require('short-number');
 		if(!queue.length > 0 || (!isPlaying)) return message.channel.send(`**:x: Nothing playing in this server.**`)
-		await message.channel.startTyping()
 		await isPlaying, function(err, videoInfo) {
 							if (err) throw new Error(err);
 							let embed = new Discord.RichEmbed()
