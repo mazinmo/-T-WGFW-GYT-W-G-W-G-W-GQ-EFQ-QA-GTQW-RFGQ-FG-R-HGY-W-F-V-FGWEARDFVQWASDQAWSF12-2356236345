@@ -283,8 +283,7 @@ bot.on("message", async message => {
 		await message.channel.startTyping()
 		await isPlaying, function(err, videoInfo) {
 							if (err) throw new Error(err);
-							message.channel.stopTyping(true);
-							message.channel.send(new Discord.RichEmbed()
+							let embed = new Discord.RichEmbed()
 							.setTitle(videoInfo.title)      
 							.setURL(videoInfo.url)
 							.addField("Channel", `[**${videoInfo.owner}**](https://youtube.com/channel/${videoInfo.channelId})`, true)
@@ -293,7 +292,8 @@ bot.on("message", async message => {
 							.addField("Likes/Dislikes", `👍 **${short(videoInfo.likeCount)}** / 👎 **${short(videoInfo.dislikeCount)}**`, true)
 							.setColor("RED")
 							.setImage(videoInfo.thumbnailUrl)
-							)
+							message.channel.send(embed)
+							
 		
 		}
 	}
