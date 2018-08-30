@@ -278,7 +278,7 @@ bot.on("message", async message => {
 
 	case "nowplaying":
 		const short = require('short-number');
-		if(!guilds[message.guild.id].queue[0] || !guilds[message.guild.id].isPlaying) return message.channel.send(`**:x: Nothing playing in this server.**`)
+		if(!queue.length > 0 || isPlaying) return message.channel.send(`**:x: Nothing playing in this server.**`)
 		await message.channel.startTyping()
 		await fetchVideoInfo(guilds[message.guild.id].queue[0], function(err, videoInfo) {
 							if (err) throw new Error(err);
