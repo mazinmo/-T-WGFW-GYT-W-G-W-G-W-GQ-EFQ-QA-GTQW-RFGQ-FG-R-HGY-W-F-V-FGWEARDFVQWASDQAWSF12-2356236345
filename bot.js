@@ -6,6 +6,7 @@ const fs = require("fs");
 const getYTID = require("get-youtube-id");
 const fetchVideoInfo = require("youtube-info");
 const prefix = "=";
+const convert = require("hh-mm-ss")
 const ytApiKey = "AIzaSyAdORXg7UZUo7sePv97JyoDqtQVi3Ll0b8";
 const youtube = new YouTube(ytApiKey);
 
@@ -278,12 +279,12 @@ bot.on("message", async message => {
 
 	case "nowplaying":
 		const short = require('short-number');
-		if(!queue.length > 0 || isPlaying) return message.channel.send(`**:x: Nothing playing in this server.**`)
+		if(!queue.length > 0 || (!isPlaying)) return message.channel.send(`**:x: Nothing playing in this server.**`)
 		await message.channel.startTyping()
-		await fetchVideoInfo(guilds[message.guild.id].queue[0], function(err, videoInfo) {
+		await isPlaying, function(err, videoInfo) {
 							if (err) throw new Error(err);
 							message.channel.stopTyping(true);
-							message.channel.send(new RichEmbed()
+							message.channel.send(new Discord.RichEmbed()
 							.setTitle(videoInfo.title)      
 							.setURL(videoInfo.url)
 							.addField("Channel", `[**${videoInfo.owner}**](https://youtube.com/channel/${videoInfo.channelId})`, true)
@@ -293,7 +294,8 @@ bot.on("message", async message => {
 							.setColor("RED")
 							.setImage(videoInfo.thumbnailUrl)
 							)
-		})
+		
+		}
 	}
 });
 
