@@ -20,69 +20,6 @@ client.on('ready', () => console.log(`Launching...`))
 client.on('message', async function(message) {
     if(message.author.bot) return;
     if(!message.channel.guild) return;
-    //////////////////////////////////
-    if(message.content === `<@${client.user.id}>`) return message.channel.send(`Hey I'am **${client.user.username}**, A nice music bot developed by: <@${client.users.get(devs[0]).id}> supported by <@${client.users.get(devs[1]).id}> `);
-    // const noms = "** ❯ :musical_note: No music is playing, try ``m-play``" 
-    const novc = "**<:MxNo:449703922190385153> | You are not in a voice channel.**"
-    // const nomatch = "**<:MxNo:449703922190385153> You've to be in the same voice channel!**"
-    const yt = "<:MxYT:451042476552355841>"
-    const correct = client.guilds.get('448425456316973057').emojis.get("451040030635458574")
-    const nope = client.guilds.get('448425456316973057').emojis.get('451040031277056001')
-    // const member = message.member;
-
-    if (message.content.startsWith(`${prefix}eval`)) {
-        const eargs = message.content.split(" ").slice(1);
-        if(!devs.includes(message.author.id)) return;
-        const clean = text => {
-            if (typeof(text) === "string")
-              return text.replace(/`/g, "`" + String.fromCharCode(8203)).replace(/@/g, "@" + String.fromCharCode(8203));
-            else
-                return text;
-          }
-        try {
-          const code = eargs.join(" ");
-          let evaled = eval(code);
-    
-          if (typeof evaled !== "string")
-            evaled = require("util").inspect(evaled);    
-          message.channel.send(clean(evaled), {code:"xl"});
-        } catch (err) {
-          message.channel.send(`\`ERROR\` \`\`\`xl\n${clean(err)}\n\`\`\``);
-        }
-      }
-
-      if(message.content.startsWith(`${prefix}info`)) {
-        function convertMS(ms) {
-            var d, h, m, s;
-            s = Math.floor(ms / 1000);
-            m = Math.floor(s / 60);
-            s = s % 60;
-            h = Math.floor(m / 60);
-            m = m % 60;
-            d = Math.floor(h / 24);
-            h = h % 24;
-            return {
-                d: d,
-                h: h,
-                m: m,
-                s: s
-            };
-        };   
-        let u = convertMS(client.uptime);
-        let uptime = u.d + " days  , " + u.h + " hrs  , " + u.m + " mins  , " + u.s + " secs"
-        message.channel.send(new RichEmbed() 
-        .setAuthor(client.user.username,client.user.avatarURL)
-        .setURL("https://abayro.xyz")
-        .addField("Version", "1.0v", true)
-        .addField("Library", "[discordjs](https://www.npmjs.com/search?q=discord.js)", true)
-        .addField("Creator", "Abady", true)
-        .addField("Users", `${client.users.size}`, true)
-        .addField('RAM Usage',`${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB`,true)     
-        .addField("Website", "No website atm", true)
-        .setFooter("Uptime "+`${uptime}`)
-        .setColor("RANDOM")
-    )
-      }
     
     const mess = message.content.toLowerCase();
     const args = message.content.split(' ').slice(1).join(" ");
