@@ -72,7 +72,7 @@ client.on('message', function(message) {
 						.setDescription(`**${videoInfo.title}**`)
 						.setImage(videoInfo.thumbnailUrl)
                         .setColor("#12D175")
-                        .setFooter('Added by : ' + message.author.tag, messsage.author.avatarURL)
+                        .setFooter('Added by : ' + message.author.tag, message.author.avatarURL)
                     message.channel.sendEmbed(play_info);
                     queueNames.push(videoInfo.title);
                     now_playing.push(videoInfo.title);
@@ -95,7 +95,7 @@ client.on('message', function(message) {
 					.setDescription(`**${videoInfo.title}**`)
 					.setImage(videoInfo.thumbnailUrl)
 					.setColor("#12D175")
-					.setFooter('Added by : ' + message.author.tag, messsage.author.avatarURL)
+					.setFooter('Added by : ' + message.author.tag, message.author.avatarURL)
                     message.channel.sendEmbed(play_info)
                     message.channel.send(':one: | **First song in the queue**.')
                 });
@@ -148,16 +148,18 @@ client.on('message', function(message) {
         if (!message.member.voiceChannel) return message.channel.send('<:false:484531097200361482> | **Please join a voice channel to play music**.');
         if (isPlaying == false) return message.channel.send(':octagonal_sign: | **Error `404`**.');
         let playing_now_info = new Discord.RichEmbed()
+        fetchVideoInfo(id, function(err, videoInfo) {
+					if (err) throw new Error(err);
 		message.channel.send(`\:truecheckmark: | **Added to the queue**:
 \`${videoInfo.title}\``)
 .setAuthor(message.guild.name, message.guild.iconURL)
 .setDescription(`**${videoInfo.title}**`)
 .setImage(videoInfo.thumbnailUrl)
 .setColor("#12D175")
-.setFooter('Added by : ' + message.author.tag, messsage.author.avatarURL)
+.setFooter('Added by : ' + message.author.tag, message.author.avatarURL)
         //.setDescription('?')
         message.channel.sendEmbed(playing_now_info);
-    }
+    })}
 });
 
 function skip_song(message) {
