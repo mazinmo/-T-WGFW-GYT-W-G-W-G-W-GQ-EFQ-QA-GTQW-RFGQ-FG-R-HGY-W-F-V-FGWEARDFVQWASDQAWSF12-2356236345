@@ -56,7 +56,7 @@ client.on('message', function(message) {
     if (command === `play`) {
         if (!message.member.voiceChannel) return message.channel.send('<:false:484531097200361482> | **Please join a voice channel to play music**.');
         if (args.length == 0) {
-            message.channel.sendEmbed(`<:false:484531097200361482> | **Correct usage**:
+            message.channel.send(`<:false:484531097200361482> | **Correct usage**:
 \`=play <song name> | <song url>\``)
             return;
         }
@@ -65,7 +65,7 @@ client.on('message', function(message) {
                 add_to_queue(id);
                 fetchVideoInfo(id, function(err, videoInfo) {
 					if (err) throw new Error(err);
-					message.channel.send(`\:truecheckmark: | **Added to the queue**:
+					message.channel.send(`<:truecheckmark:484218789446156288> | **Added to the queue**:
 \`${videoInfo.title}\``)
                     let play_info = new Discord.RichEmbed()
 						.setAuthor(message.guild.name, message.guild.iconURL)
@@ -136,7 +136,7 @@ client.on('message', function(message) {
     else if (command === `stop`) {
         if (!message.member.voiceChannel) return message.channel.send('<:false:484531097200361482> | **Please join a voice channel to play music**.');
         if (!queue) return message.channel.send(':mag_right: | **There is no queue to stop**.')
-        message.channel.send('Stopped!');
+        message.channel.send(':stop_button: | **Stopped**.');
         var server = server = servers[message.guild.id];
         if (message.guild.voiceConnection) message.guild.voiceConnection.disconnect();
     }
