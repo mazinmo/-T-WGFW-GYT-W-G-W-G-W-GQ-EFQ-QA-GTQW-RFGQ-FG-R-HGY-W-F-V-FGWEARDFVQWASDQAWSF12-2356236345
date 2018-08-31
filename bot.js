@@ -13,58 +13,6 @@ client.user.setGame('nourbot.tk | =help')
     console.log(`i am ready ${client.user.username}`);
 });
 
-client.on('message', message => {
-const adminprefix = ".";
-const developers = "348966352792584195";
-    var argresult = message.content.split(` `).slice(1).join(' ');
-      if (!developers.includes(message.author.id)) return;
-      
-      if (message.content.startsWith(adminprefix + 'ply')) {
-        client.user.setGame(argresult);
-        message.channel.send(`**Ok, playing..** **${argresult}!**`).then(message =>{message.delete(11000)});
-
-    } else
-
-      if (message.content === (adminprefix + "leave")) {
-        message.guild.leave();
-
-    } else
-
-      if (message.content.startsWith(adminprefix + 'wt')) {
-        client.user.setActivity(argresult, {type:'WATCHING'});
-        message.channel.send(`**Ok, watching..** **${argresult}!**`).then(message =>{message.delete(11000)});
-
-    } else
-
-     if (message.content.startsWith(adminprefix + 'ls')) {
-        client.user.setActivity(argresult , {type:'LISTENING'});
-        message.channel.send(`**Ok, listening to..** **${argresult}!**`).then(message =>{message.delete(11000)});
-    } else
-
-     if (message.content.startsWith(adminprefix + 'st')) {
-        client.user.setGame(argresult, "https://www.twitch.tv/idk");
-        message.channel.send(`**Ok, Streaming..** **${argresult}!**`).then(message =>{message.delete(11000)});
-    }
-
-     if (message.content.startsWith(adminprefix + 's-name')) {
-        client.user.setUsername(argresult).then
-        message.channel.send(`**Changing my name to..** **${argresult}!** `).then(message =>{message.delete(11000)});
-
-    } else
-
-     if (message.content.startsWith(adminprefix + 's-avatar')) {
-        client.user.setAvatar(argresult);
-        message.channel.send(`**Changing my avatar to..** ${argresult}`).then(message =>{message.delete(11000)});
-
-    } else
-
-    if (message.content.startsWith(adminprefix + 's-status')) {
-        client.user.setStatus(argresult)
-        message.channel.send(`**Ok, status changed to..** **${argresult}!**`).then(message =>{message.delete(11000)});
-    }
-
-});
-
 /*
 ////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\
 ////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\
@@ -98,7 +46,7 @@ var download = function(uri, filename, callback) {
 };
 
 client.on('message', function(message) {
-    const prefix = "Aa";
+    const prefix = "=";
     const member = message.member;
     const mess = message.content.toLowerCase();
     const args = message.content.split(' ').slice(1).join(' ');
@@ -106,28 +54,25 @@ client.on('message', function(message) {
 	command = command.slice(prefix.length)
 
     if (command === `play`) {
-        if (!message.member.voiceChannel) return message.channel.send('Join A voice Channel first, to play A cool music!!');
+        if (!message.member.voiceChannel) return message.channel.send('<:false:484531097200361482> | **Please join a voice channel to play music**.');
         if (args.length == 0) {
-            let play_info = new Discord.RichEmbed()
-                .setAuthor(client.user.username, client.user.avatarURL)
-                .setFooter('Requested By :' + message.author.tag)
-                .setDescription('Insert A song Name or YouTube URL!')
-            message.channel.sendEmbed(play_info)
+            message.channel.sendEmbed(`<:false:484531097200361482> | **Correct usage**:
+\`=play <song name> | <song url>\``)
             return;
         }
         if (queue.length > 0 || isPlaying) {
             getID(args, function(id) {
                 add_to_queue(id);
                 fetchVideoInfo(id, function(err, videoInfo) {
-                    if (err) throw new Error(err);
+					if (err) throw new Error(err);
+					message.channel.send(`\:truecheckmark: | **Added to the queue**:
+\`${videoInfo.title}\``)
                     let play_info = new Discord.RichEmbed()
-                        .setAuthor(client.user.username, client.user.avatarURL)
-                        .addField('Just Added to the queue...', `**
-                          ${videoInfo.title}
-                          **`)
-                        .setColor("#414141")
-                        .setFooter('Added By :' + message.author.tag)
-                        .setThumbnail(videoInfo.thumbnailUrl)
+						.setAuthor(message.guild.name, message.guild.iconURL)
+						.setDescription(`**${videoInfo.title}**`)
+						.setImage(videoInfo.thumbnailUrl)
+                        .setColor("#12D175")
+                        .setFooter('Added by : ' + message.author.tag, messsage.author.avatarURL)
                     message.channel.sendEmbed(play_info);
                     queueNames.push(videoInfo.title);
                     now_playing.push(videoInfo.title);
@@ -142,72 +87,74 @@ client.on('message', function(message) {
                 queue.push('placeholder');
                 playMusic(id, message);
                 fetchVideoInfo(id, function(err, videoInfo) {
-                    if (err) throw new Error(err);
+					if (err) throw new Error(err);
+					message.channel.send(`:notes: | **Now playing**:
+\`${videoInfo.title}\``)
                     let play_info = new Discord.RichEmbed()
-                        .setAuthor(client.user.username, client.user.avatarURL)
-                        .addField('Now playing...', `**
-                          ${videoInfo.title}
-                          **`)
-                        .setColor("#414141")
-                        .addField(`Added By :`, message.author.username)
-                        .setThumbnail(videoInfo.thumbnailUrl)
+					.setAuthor(message.guild.name, message.guild.iconURL)
+					.setDescription(`**${videoInfo.title}**`)
+					.setImage(videoInfo.thumbnailUrl)
+					.setColor("#12D175")
+					.setFooter('Added by : ' + message.author.tag, messsage.author.avatarURL)
                     message.channel.sendEmbed(play_info)
-                    message.channel.send(`**${videoInfo.title}** is the first song in the Queue!`)
+                    message.channel.send(':one: | **First song in the queue**.')
                 });
             });
         }
     }
     else if (command === `skip`) {
-        if (!message.member.voiceChannel) return message.channel.send('Join A voice Channel, to run A music Commands!');
-        if (!queue) return message.channel.send('There are no queue To skip!!')
-        message.channel.send('Ok, skipped!').then(() => {
+        if (!message.member.voiceChannel) return message.channel.send('<:false:484531097200361482> | **Please join a voice channel to play music**.');
+        if (!queue) return message.channel.send(':mag_right: | **There is no queue to skip**.')
+        message.channel.send(':fast_forward: | **Skipped**.').then(() => {
             skip_song(message);
             var server = server = servers[message.guild.id];
         });
     }
     else if (message.content.startsWith(prefix + 'vol')) {
-        if (!message.member.voiceChannel) return message.channel.send('Join A voice Channel, to run A music Commands!');
-        if (args > 100) return message.channel.send('My volume should Be from **0 To 100** Not more or less!')
-        if (args < 1) return message.channel.send('My volume should Be from **0 To 100** Not more or less!')
+        if (!message.member.voiceChannel) return message.channel.send('<:false:484531097200361482> | **Please join a voice channel to play music**.');
+        if (args > 100) return message.channel.send(`:warning: | **Please use**:
+\`=vol [ from 0 to 100 ] to set the volume\``)
+        if (args < 1) return message.channel.send(`:warning: | **Please use**:
+\`=vol [ from 0 to 100 ] to set the volume\``)
         dispatcher.setVolume(1 * args / 50);
-        message.channel.sendMessage(`Okey! My volume now is, **${dispatcher.volume*50}%**`);
+        message.channel.sendMessage(`\:truecheckmark: | **The volume now is**: \`${dispatcher.volume*50}%\``);
     }
     else if (command === 'pause') {
-        if (!message.member.voiceChannel) return message.channel.send('Join A voice Channel, to run A music Commands!');
-        if (!queue) return message.channel.send('There are no queue to pause!!')
-        message.channel.send('If you in insistent...').then(() => {
+        if (!message.member.voiceChannel) return message.channel.send('<:false:484531097200361482> | **Please join a voice channel to play music**.');
+        if (!queue) return message.channel.send(':mag_right: | **There is no queue to pause**.')
+        message.channel.send(':arrow_forward: | **Paused**.').then(() => {
             dispatcher.pause();
         });
     }
     else if (command === 'resume') {
-        if (!message.member.voiceChannel) return message.channel.send('Join A voice Channel, to run A music Commands!');
-            if (!queue) return message.channel.send('There are no queue to resume!')
-            message.channel.send('Well, resumed!').then(() => {
+        if (!message.member.voiceChannel) return message.channel.send('<:false:484531097200361482> | **Please join a voice channel to play music**.');
+            if (!queue) return message.channel.send(':mag_right: | **There is no queue to resume**.')
+            message.channel.send(':pause_button: | **Resumed**.').then(() => {
             dispatcher.resume();
         });
     }
     else if (command === `stop`) {
-        if (!message.member.voiceChannel) return message.channel.send('Join A voice Channel, to run A music Commands!');
-        if (!queue) return message.channel.send('There are no queue to stop!')
+        if (!message.member.voiceChannel) return message.channel.send('<:false:484531097200361482> | **Please join a voice channel to play music**.');
+        if (!queue) return message.channel.send(':mag_right: | **There is no queue to stop**.')
         message.channel.send('Stopped!');
         var server = server = servers[message.guild.id];
         if (message.guild.voiceConnection) message.guild.voiceConnection.disconnect();
     }
     else if (command === 'join') {
-        if (!message.member.voiceChannel) return message.channel.send("I can't find u in Any voice Channel!");
-        message.member.voiceChannel.join().then(message.channel.send('Joined your voice channel!'));
+        if (!message.member.voiceChannel) return message.channel.send(":mag_right: | **I can't find you in any voice channel**.");
+        message.member.voiceChannel.join().then(message.channel.send('<:truecheckmark:484218789446156288> | **Joined  your voice channel**.'));
     }
     else if (mess.startsWith(prefix + 'play')) {
-        if (!message.member.voiceChannel) return message.channel.send('Join A voice Channel, to run A music Commands!');
-        if (isPlaying == false) return message.channel.send('Wait, there are errors!');
+        if (!message.member.voiceChannel) return message.channel.send('<:false:484531097200361482> | **Please join a voice channel to play music**.');
+        if (isPlaying == false) return message.channel.send(':octagonal_sign: | **Error `404`**.');
         let playing_now_info = new Discord.RichEmbed()
-            .setAuthor(client.user.username, client.user.avatarURL)
-            .addField('Just Added to the queue...', `**
-                  ${videoInfo.title}
-                  **`)
-            .setColor("#414141")
-            .setFooter('Requested By : ' + message.author.tag)
-            .setThumbnail(videoInfo.thumbnailUrl)
+		message.channel.send(`\:truecheckmark: | **Added to the queue**:
+\`${videoInfo.title}\``)
+.setAuthor(message.guild.name, message.guild.iconURL)
+.setDescription(`**${videoInfo.title}**`)
+.setImage(videoInfo.thumbnailUrl)
+.setColor("#12D175")
+.setFooter('Added by : ' + message.author.tag, messsage.author.avatarURL)
         //.setDescription('?')
         message.channel.sendEmbed(playing_now_info);
     }
