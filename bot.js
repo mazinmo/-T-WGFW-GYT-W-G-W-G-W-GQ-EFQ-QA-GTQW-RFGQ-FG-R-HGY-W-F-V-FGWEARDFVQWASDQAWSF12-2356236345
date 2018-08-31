@@ -117,7 +117,7 @@ client.on('message', function(message) {
         if (args < 1) return message.channel.send(`:warning: | **Please use**:
 \`=vol [ from 0 to 100 ] to set the volume\``)
         dispatcher.setVolume(1 * args / 50);
-        message.channel.sendMessage(`\:truecheckmark: | **The volume now is**: \`${dispatcher.volume*50}%\``);
+        message.channel.sendMessage(`<:truecheckmark:484218789446156288> | **The volume now is**: \`${dispatcher.volume*50}%\``);
     }
     else if (command === 'pause') {
         if (!message.member.voiceChannel) return message.channel.send('<:false:484531097200361482> | **Please join a voice channel to play music**.');
@@ -150,7 +150,7 @@ client.on('message', function(message) {
         let playing_now_info = new Discord.RichEmbed()
         fetchVideoInfo(id, function(err, videoInfo) {
 					if (err) throw new Error(err);
-		message.channel.send(`\:truecheckmark: | **Added to the queue**:
+		message.channel.send(`<:truecheckmark:484218789446156288> | **Added to the queue**:
 \`${videoInfo.title}\``)
 .setAuthor(message.guild.name, message.guild.iconURL)
 .setDescription(`**${videoInfo.title}**`)
