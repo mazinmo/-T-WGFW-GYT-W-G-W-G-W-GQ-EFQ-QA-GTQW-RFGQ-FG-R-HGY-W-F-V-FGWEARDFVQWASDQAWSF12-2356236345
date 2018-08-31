@@ -73,7 +73,6 @@ client.on('message', function(message) {
 						.setImage(videoInfo.thumbnailUrl)
                         .setColor("#12D175")
                         .setFooter('Added by : ' + message.author.tag, message.author.avatarURL)
-		    .setTimestamp
                     message.channel.sendEmbed(play_info);
                     queueNames.push(videoInfo.title);
                     now_playing.push(videoInfo.title);
@@ -97,7 +96,6 @@ client.on('message', function(message) {
 					.setImage(videoInfo.thumbnailUrl)
 					.setColor("#12D175")
 					.setFooter('Played by : ' + message.author.tag, message.author.avatarURL)
-		    .setTimestamp
                     message.channel.sendEmbed(play_info)
                     message.channel.send(':one: | **First song in the queue**.')
                 });
