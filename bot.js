@@ -53,7 +53,7 @@ client.on('message', function(message) {
 	let command = message.content.toLowerCase().split(" ")[0];
 	command = command.slice(prefix.length)
 
-    if (command === `play`) {
+    if(message.content.startsWith(prefix + 'play')) {
         if (!message.member.voiceChannel) return message.channel.send('<:false:484531097200361482> | **Please join a voice channel to play music**.');
         if (args.length == 0) {
             message.channel.send(`<:false:484531097200361482> | **Correct usage**:
@@ -102,7 +102,7 @@ client.on('message', function(message) {
             });
         }
     }
-    else if (command === `skip`) {
+    else if(message.content.startsWith(prefix + 'skip')) {
         if (!message.member.voiceChannel) return message.channel.send('<:false:484531097200361482> | **Please join a voice channel to play music**.');
         if (!queue) return message.channel.send(':mag_right: | **There is no queue to skip**.')
         message.channel.send(':fast_forward: | **Skipped**.').then(() => {
@@ -119,32 +119,32 @@ client.on('message', function(message) {
         dispatcher.setVolume(1 * args / 50);
         message.channel.sendMessage(`<:truecheckmark:484218789446156288> | **The volume now is**: \`${dispatcher.volume*50}%\``);
     }
-    else if (command === 'pause') {
+    else if(message.content.startsWith(prefix + 'pause')) {
         if (!message.member.voiceChannel) return message.channel.send('<:false:484531097200361482> | **Please join a voice channel to play music**.');
         if (!queue) return message.channel.send(':mag_right: | **There is no queue to pause**.')
         message.channel.send(':arrow_forward: | **Paused**.').then(() => {
             dispatcher.pause();
         });
     }
-    else if (command === 'resume') {
+    else if(message.content.startsWith(prefix + 'resume')) {
         if (!message.member.voiceChannel) return message.channel.send('<:false:484531097200361482> | **Please join a voice channel to play music**.');
             if (!queue) return message.channel.send(':mag_right: | **There is no queue to resume**.')
             message.channel.send(':pause_button: | **Resumed**.').then(() => {
             dispatcher.resume();
         });
     }
-    else if (command === `stop`) {
+    else if(message.content.startsWith(prefix + 'stop')) {
         if (!message.member.voiceChannel) return message.channel.send('<:false:484531097200361482> | **Please join a voice channel to play music**.');
         if (!queue) return message.channel.send(':mag_right: | **There is no queue to stop**.')
         message.channel.send(':stop_button: | **Stopped**.');
         var server = server = servers[message.guild.id];
         if (message.guild.voiceConnection) message.guild.voiceConnection.disconnect();
     }
-    else if (command === 'join') {
+    else if(message.content.startsWith(prefix + 'join')) {
         if (!message.member.voiceChannel) return message.channel.send(":mag_right: | **I can't find you in any voice channel**.");
         message.member.voiceChannel.join().then(message.channel.send('<:truecheckmark:484218789446156288> | **Joined  your voice channel**.'));
     }
-    else if (mess.startsWith(prefix + 'play')) {
+    else if(message.content.startsWith(prefix + 'play')) {
         if (!message.member.voiceChannel) return message.channel.send('<:false:484531097200361482> | **Please join a voice channel to play music**.');
         if (isPlaying == false) return message.channel.send(':octagonal_sign: | **Error `404`**.');
         let playing_now_info = new Discord.RichEmbed()
