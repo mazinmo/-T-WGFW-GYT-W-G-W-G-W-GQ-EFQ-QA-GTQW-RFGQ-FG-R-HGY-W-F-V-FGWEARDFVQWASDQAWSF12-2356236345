@@ -3,6 +3,8 @@ const client = new Discord.Client();
 const ytdl = require('ytdl-core');
 const request = require('request');
 const fs = require('fs');
+const short = require('short-number');
+const convert = require("hh-mm-ss");
 const getYoutubeID = require('get-youtube-id');
 const fetchVideoInfo = require('youtube-info');
 
