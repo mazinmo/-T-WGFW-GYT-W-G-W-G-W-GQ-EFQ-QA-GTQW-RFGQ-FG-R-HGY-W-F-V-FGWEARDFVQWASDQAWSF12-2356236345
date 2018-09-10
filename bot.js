@@ -92,7 +92,11 @@ client.on('message', function(message) {
 \`${videoInfo.title}\``)
                     let play_info = new Discord.RichEmbed()
 					.setAuthor(message.guild.name, message.guild.iconURL)
-					.setDescription(`**${videoInfo.title}**`)
+					.setDescription(`**${videoInfo.title}**
+**# - Channel **: [** ${videoInfo.owner} **](https://youtube.com/channel/${videoInfo.channelId})
+**# - Duration **: \`${convert.fromS(videoInfo.duration, 'mm:ss')}\`
+**# - Views **: \`${short(videoInfo.views)}\`
+**# - Likes/Dislikes **: 👍 \`${short(videoInfo.likeCount)}\` **|** 👎 \`${short(videoInfo.dislikeCount)}\``)
 					.setImage(videoInfo.thumbnailUrl)
 					.setColor("#12D175")
 					.setFooter('Played by : ' + message.author.tag, message.author.avatarURL)
