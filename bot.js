@@ -8,5 +8,5 @@ client.user.setStatus('away', 'Maintenance | صيانة')
 console.log(`i am ready ${client.user.username}`);
 });
 
-
+//MAINTENANCE
 client.login(process.env.token)
